@@ -1,0 +1,82 @@
+
+; this is a comment
+
+(var x)                     ; declares a variable x, set to nil
+(var y 0)                   ; declares a variable y, set to 0
+(set x 42)                  ; sets the value of x to 42
+
+(println "Hello, world.")   ; prints all given strings, adding newlines
+(println (+ 2 2))           ; prints '4'
+(println (+ 2 2 2))         ; prints '6'. all arithmetic operators work the same
+
+(while (< y 3)              ; loops three times, and prints the value of y
+    (println y)
+    (set y (+ y 1))
+
+(fun hello (name)           ; defines hello-function taking one parameter
+    (println (+ "Hello, " name)))   ; concatenates strings
+
+(fun say-add (saying li)         ; defines a function taking two parameters
+    (println saying)    ; print the saying
+    (+ (expand li))          ; returns the sum of the list (# denotes a reference)
+
+(hello "Jones")         ; calling the hello function
+
+(say-add "Add this!" (list 1 2 3 4 5))
+
+
+; available types:
+;   string:     "a string"
+;   integers:   42
+;   lists - there is no list literal, but the following examples returns lists:
+;       (list 1 2 3 4 5)
+;       (list "one" "two" "three")
+;       (list "one" 2 "three")
+;
+;   Note: typing is duck-typical, and the interpreter throws an exception if an
+;           operation cannot be done.
+
+; available operators:
+;   arithmetic:
+;       +
+;       -
+;       /
+;       *
+;
+;   comparison:
+;       <
+;       >
+;       =
+;
+;   shorthands:
+;       #           This returns the reference to the following expression or
+;                   variable. Shorthand for reference-of. Used without parens:
+;                   #(list 1 2 3 4 5) -> reference to the list 1, 2, 3, 4, 5
+;
+
+; built-in functions
+;   var             Declares/defines a variable
+;   set             Changes the value of a variable
+;   fun             Defines a function
+;   println         Prints all its parameters on separate lines
+;   while           As long as first parameter evaluates to true, evaluates rest
+;                       of parameters as expressions
+;   reference-of    Returns reference of single parameter (QUOTE in other lisps)
+;   if              If first parameter evaluates to a true value, evaluates
+;                       second parameter, if not it evaluates the second parameter
+;
+;   Pertaining to lists:
+;       list            Returns a list of all arguments
+;       expand          Expands list into separate values (for passing as arguments)
+;       append          Adds elements to existing lists
+;       at-index i c    Returns element of 'c' at index 'i' also works with strings
+;       range f t c     Returns new list which is a sublist of 'c', containing
+;                       elements from index 'f' to 't'. Also works with strings.
+
+; boolean values:
+;   nil                 Equates to java 'null' and is a false value
+;   0                   Zero is a false value
+;   ""                  The empty string is a false value
+;   (list)              The empty list is a false value
+;
+;   All other values are true
