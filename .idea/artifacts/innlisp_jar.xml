@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="innlisp:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/innlisp_jar</output-path>
+    <root id="archive" name="innlisp.jar">
+      <element id="module-output" name="innlisp" />
+    </root>
+  </artifact>
+</component>
