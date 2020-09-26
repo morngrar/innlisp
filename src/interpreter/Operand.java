@@ -1,9 +1,7 @@
 package interpreter;
 
-import jdk.jshell.spi.ExecutionControl;
-
 public class Operand extends InnLispExpression {
-    private int value;
+    private final int value;
 
     public Operand(int value) {
         this.value = value;

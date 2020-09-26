@@ -3,8 +3,6 @@ package parser;
 import interpreter.*;
 import iterator.StringIterator;
 
-import java.beans.Expression;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -13,16 +11,6 @@ public class Parser {
             ' ', '\t', '\n', '\r'
     );
 
-    private static void parseArithmeticExpression(
-            StringIterator iterator, InnLispExpression expression
-    ) {
-        if (!whiteSpace.contains(iterator.next())) {
-            throw new IllegalArgumentException("Invalid expression");
-        }
-        while (iterator.hasNext()) {
-            expression.add(getNextToken(iterator));
-        }
-    }
 
     public static InnLispExpression parse(String code) {
 
@@ -52,8 +40,6 @@ public class Parser {
             );
         }
 
-        char last = '\0';
-        char next;
         while (iterator.hasNext()) {
             switch (iterator.next()) {
                 case '+' -> {
@@ -72,13 +58,22 @@ public class Parser {
                     expression = new DivisionExpression();
                     parseArithmeticExpression(iterator, expression);
                 }
-                default -> {
-                    throw new IllegalArgumentException("Unrecognised operator");
-                }
+                default -> throw new IllegalArgumentException("Unrecognised operator");
             }
         }
 
         return expression;
+    }
+
+    private static void parseArithmeticExpression(
+            StringIterator iterator, InnLispExpression expression
+    ) {
+        if (!whiteSpace.contains(iterator.next())) {
+            throw new IllegalArgumentException("Invalid expression");
+        }
+        while (iterator.hasNext()) {
+            expression.add(getNextToken(iterator));
+        }
     }
 
     private static String extractSubExpression(StringIterator iterator) {

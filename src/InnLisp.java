@@ -11,6 +11,5 @@ public class InnLisp {
         Operand result = Parser.parse(code).interpret(null);
 
         System.out.println("Result: " + result.getValue());
-
     }
 }
