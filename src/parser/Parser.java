@@ -68,19 +68,14 @@ public class Parser {
                     expression = new MultiplicationExpression();
                     parseArithmeticExpression(iterator, expression);
                 }
-            }
-
-
-            /*if (next == '(') {
-                // accumulate subexpression and parse recursively
-                String subexpression = extractSubExpression(iterator);
-
-                if (expression == null) {
-                    throw new IllegalArgumentException("Every expression must begin with an operator");
+                case '/' -> {
+                    expression = new DivisionExpression();
+                    parseArithmeticExpression(iterator, expression);
                 }
-                expression.add(parse(subexpression));
-            }*/
-
+                default -> {
+                    throw new IllegalArgumentException("Unrecognised operator");
+                }
+            }
         }
 
         return expression;
