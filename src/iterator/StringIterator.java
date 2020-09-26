@@ -22,4 +22,8 @@ public class StringIterator {
         }
         return string.charAt(counter++);
     }
+
+    public void reset() {
+        counter = 0;
+    }
 }

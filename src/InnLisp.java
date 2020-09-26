@@ -3,8 +3,8 @@ import parser.Parser;
 
 public class InnLisp {
     public static void main(String[] args) {
-        String code = "(+ (- 20 1 1 1 1 1 1 1 1 1 1) 5)";
-        System.out.println("Testing interpreting '" + code + "'");
+        String code = "(+ \n\t(- 20 1 1 1 1 1 1 1 1 1 1) (* 5 3))";
+        System.out.println("\nTesting interpreting:\n\n" + code + "\n");
 
         Operand result = Parser.parse(code).interpret(null);
 
