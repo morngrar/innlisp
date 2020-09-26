@@ -3,6 +3,7 @@ package parser;
 import interpreter.AddExpression;
 import interpreter.InnLispExpression;
 import interpreter.Operand;
+import interpreter.SubtractExpression;
 import iterator.StringIterator;
 
 import java.beans.Expression;
@@ -33,13 +34,20 @@ public class Parser {
             next = iterator.next();
 
             if (next == '+') {
-
                 if (!validateCurrentChar(next, iterator.next())) { // should be space only
                     throw new IllegalArgumentException("Invalid expression");
                 }
-
                 expression = new AddExpression();
+                while (iterator.hasNext()) {
+                    expression.add(getNextToken(iterator));
+                }
+            }
 
+            if (next == '-') {
+                if (!validateCurrentChar(next, iterator.next())) { // should be space only
+                    throw new IllegalArgumentException("Invalid expression");
+                }
+                expression = new SubtractExpression();
                 while (iterator.hasNext()) {
                     expression.add(getNextToken(iterator));
                 }
@@ -108,7 +116,7 @@ public class Parser {
     }
 
     private static boolean validateCurrentChar(char last, char current) {
-        List<Character> spaceOnly = Arrays.asList('+');
+        List<Character> spaceOnly = Arrays.asList('+', '-');
         List<Character> validChars = Arrays.asList(' ', '(', ')');
         if (spaceOnly.contains(last) && current != ' ') return false;
 
