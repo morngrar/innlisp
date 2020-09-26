@@ -1,4 +1,5 @@
 package interpreter;
 
-public interface Context {
+public class Context {
+
 }

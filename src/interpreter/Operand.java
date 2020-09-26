@@ -1,10 +1,8 @@
 package interpreter;
 
-enum OperandType {
-    INTEGER,
-}
+import jdk.jshell.spi.ExecutionControl;
 
-public class Operand implements InnLispExpression {
+public class Operand extends InnLispExpression {
     private int value;
 
     public Operand(int value) {
@@ -18,5 +16,9 @@ public class Operand implements InnLispExpression {
     @Override
     public Operand interpret(Context ctx) {
         return this;
+    }
+
+    @Override
+    public void add(InnLispExpression expression) {
     }
 }

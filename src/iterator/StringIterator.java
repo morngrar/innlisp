@@ -1,5 +1,7 @@
 package iterator;
 
+import java.util.NoSuchElementException;
+
 public class StringIterator {
     private final String string;
     private final int length;
@@ -15,6 +17,9 @@ public class StringIterator {
     }
 
     public char next() {
+        if (!this.hasNext()) {
+            throw new NoSuchElementException();
+        }
         return string.charAt(counter++);
     }
 }
