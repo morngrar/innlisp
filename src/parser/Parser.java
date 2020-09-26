@@ -11,6 +11,15 @@ public class Parser {
             ' ', '\t', '\n', '\r'
     );
 
+    public static boolean parensMatch(StringIterator iterator) {
+        int cnt = 0;
+        while (iterator.hasNext()) {
+            char ch = iterator.next();
+            if (ch == '(') cnt++;
+            else if (ch == ')') cnt--;
+        }
+        return cnt == 0;
+    }
 
     public static InnLispExpression parse(String code) {
 
@@ -23,13 +32,7 @@ public class Parser {
         StringIterator iterator = new StringIterator(code);
 
         // checking if parentheses match up
-        int cnt = 0;
-        while (iterator.hasNext()) {
-            char ch = iterator.next();
-            if (ch == '(') cnt++;
-            else if (ch == ')') cnt--;
-        }
-        if (cnt != 0) {
+        if (!parensMatch(iterator)) {
             throw new IllegalArgumentException("Number of parentheses must match");
         }
         iterator.reset();
