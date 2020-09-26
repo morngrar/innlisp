@@ -40,8 +40,9 @@ public class Parser {
             );
         }
 
-        while (iterator.hasNext()) {
-            switch (iterator.next()) {
+        if (iterator.hasNext()) {
+            char ch = iterator.next();
+            switch (ch) {
                 case '+' -> {
                     expression = new AddExpression();
                     parseArithmeticExpression(iterator, expression);
@@ -58,7 +59,29 @@ public class Parser {
                     expression = new DivisionExpression();
                     parseArithmeticExpression(iterator, expression);
                 }
-                default -> throw new IllegalArgumentException("Unrecognised operator");
+                default -> {
+                    if (!Character.isLetter(ch)) {
+                        throw new IllegalArgumentException("Unrecognised operator");
+                    }
+
+                    // accumulate symbol
+                    String symbol = "";
+                    while (ch != ')' && !whiteSpace.contains(ch)) {
+                        symbol += ch;
+                        ch = iterator.next();
+                    }
+
+                    switch (symbol) {
+                        case "set" -> {
+                            //TODO
+                        }
+                        case "var" -> {
+                            //TODO
+                        }
+                        default -> throw new IllegalArgumentException("Unknown symbol");
+                    }
+
+                }
             }
         }
 
