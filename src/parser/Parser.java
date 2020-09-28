@@ -5,6 +5,7 @@ import iterator.StringIterator;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class Parser {
     private static final List<Character> whiteSpace = Arrays.asList(
@@ -67,28 +68,47 @@ public class Parser {
                         throw new IllegalArgumentException("Unrecognised operator");
                     }
 
-                    // accumulate symbol
-                    String symbol = "";
-                    while (ch != ')' && !whiteSpace.contains(ch)) {
-                        symbol += ch;
-                        ch = iterator.next();
-                    }
-
+                    String symbol = accumulateSymbol(ch, iterator);
                     switch (symbol) {
                         case "set" -> {
-                            //TODO
+                            expression = new SetExpression();
+                            expression.add(getNextToken(iterator));
+                            try {
+                                expression.add(getNextToken(iterator));
+                            } catch (NoSuchElementException ignored){ } // there is given no value
                         }
                         case "var" -> {
-                            //TODO
+                            expression = new VarExpression();
+                            expression.add(getNextToken(iterator));
+                            try {
+                                expression.add(getNextToken(iterator));
+                            } catch (NoSuchElementException ignored){ } // there is given no value
+                        }
+                        case "println" -> {
+                            expression = new PrintlnExpression();
+                            InnLispExpression toPrint = getNextToken(iterator);
+                            if (toPrint == null) throw new IllegalArgumentException("Nothing to print");
+                            do {
+                                expression.add(toPrint);
+                                toPrint = getNextToken(iterator);
+                            } while (toPrint != null);
                         }
                         default -> throw new IllegalArgumentException("Unknown symbol");
                     }
-
                 }
             }
         }
 
         return expression;
+    }
+
+    private static String accumulateSymbol(char ch, StringIterator iterator) {
+        StringBuilder symbol = new StringBuilder();
+        while (ch != ')' && !whiteSpace.contains(ch)) {
+            symbol.append(ch);
+            ch = iterator.next();
+        }
+        return symbol.toString();
     }
 
     private static void parseArithmeticExpression(
@@ -122,10 +142,27 @@ public class Parser {
     private static InnLispExpression getNextToken(StringIterator iterator) {
         String tmp = "";
 
+        // Handling end of string
+        char next;
+        try {
+            next = iterator.next();
+        } catch (NoSuchElementException ignored) {
+            return null;
+        }
+
+        // skip whitespace
+        if (whiteSpace.contains(next))
+            while(whiteSpace.contains(next)) next = iterator.next();
+
         // the next operand is an expression
-        char next = iterator.next();
         if (next == '(') {
             return parse(extractSubExpression(iterator));
+        }
+
+        // variable symbol
+        if (Character.isLetter(next)) {
+            String symbol = accumulateSymbol(next, iterator);
+            return new VariableOperand(symbol);
         }
 
         // regular integer
@@ -139,9 +176,11 @@ public class Parser {
             next = iterator.next();
         }
 
+
+
         int value;
         if (tmp.equals("")) {
-            value = 0;
+            return null;
         } else {
             value = Integer.parseInt(tmp);
         }
@@ -151,10 +190,6 @@ public class Parser {
 
     private static boolean validateCurrentChar(char last, char current) {
         List<Character> validChars = Arrays.asList(
-                ' ',
-                '\t',
-                '\n',
-                '\r',
                 '(',
                 ')'
         );
@@ -166,6 +201,7 @@ public class Parser {
            return false;
         }
 
+        // a number shouldn't be directly followed by anything not valid
         return Character.isDigit(current) || validChars.contains(current);
     }
 }

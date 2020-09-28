@@ -1,3 +1,4 @@
+import interpreter.Context;
 import interpreter.Operand;
 import iterator.StringIterator;
 import parser.Parser;
@@ -23,6 +24,7 @@ public class InnLisp {
 
     public static void repl() throws IOException {
         String tmp;
+        Context ctx = new Context();
         BufferedReader reader =
                 new BufferedReader(new InputStreamReader(System.in));
 
@@ -30,19 +32,23 @@ public class InnLisp {
         Operand result;
         StringIterator iterator;
         while (true) {
-            expression = new StringBuilder();
-            do {
-                System.out.print("> ");
-                tmp = reader.readLine();
-                if (tmp == null) System.exit(1);
-                if (tmp.equals("") || tmp.equals("q") || tmp.equals("quit")) break;
-                expression.append(tmp);
-                iterator = new StringIterator(expression.toString());
-            } while (!Parser.parensMatch(iterator));
+            try {
+                expression = new StringBuilder();
+                do {
+                    System.out.print("> ");
+                    tmp = reader.readLine();
+                    if (tmp == null) System.exit(1);
+                    if (tmp.equals("") || tmp.equals("q") || tmp.equals("quit")) break;
+                    expression.append(tmp);
+                    iterator = new StringIterator(expression.toString());
+                } while (!Parser.parensMatch(iterator));
 
-            if (tmp.equals("q") || tmp.equals("quit")) break;
-            result = Parser.parse(expression.toString()).interpret(null);
-            System.out.println(": " + result.getValue() + "\n");
+                if (tmp.equals("q") || tmp.equals("quit")) break;
+                result = Parser.parse(expression.toString()).interpret(ctx);
+                System.out.println(": " + result.getValue() + "\n");
+            } catch (IllegalArgumentException e) {
+                System.out.println("Invalid expression: " + e);
+            }
         }
     }
 }
