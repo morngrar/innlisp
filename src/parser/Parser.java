@@ -12,14 +12,18 @@ public class Parser {
             ' ', '\t', '\n', '\r'
     );
 
-    public static boolean parensMatch(StringIterator iterator) {
-        int cnt = 0;
+    public static boolean parensNotMatching(StringIterator iterator) {
+        int opening = 0;
+        int closing = 0;
         while (iterator.hasNext()) {
             char ch = iterator.next();
-            if (ch == '(') cnt++;
-            else if (ch == ')') cnt--;
+            if (ch == '(') opening++;
+            else if (ch == ')') closing++;
+
+            if (closing > opening)
+                throw new IllegalArgumentException("Too many closing parentheses");
         }
-        return cnt == 0;
+        return (opening-closing != 0);
     }
 
     public static InnLispExpression parse(String code) {
@@ -33,7 +37,7 @@ public class Parser {
         StringIterator iterator = new StringIterator(code);
 
         // checking if parentheses match up
-        if (!parensMatch(iterator)) {
+        if (parensNotMatching(iterator)) {
             throw new IllegalArgumentException("Number of parentheses must match");
         }
         iterator.reset();
@@ -180,7 +184,7 @@ public class Parser {
 
         int value;
         if (tmp.equals("")) {
-            return null;
+            value = 0;
         } else {
             value = Integer.parseInt(tmp);
         }
