@@ -13,6 +13,10 @@ public class VariableOperand extends InnLispExpression {
     }
 
     @Override
+    public void add(InnLispExpression expression) {
+    }
+
+    @Override
     public Operand interpret(Context ctx) {
         return new Operand(ctx.valueOfVariable(symbol));
     }
