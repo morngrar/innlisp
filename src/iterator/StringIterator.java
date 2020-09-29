@@ -5,7 +5,7 @@ import java.util.NoSuchElementException;
 public class StringIterator {
     private final String string;
     private final int length;
-    private int counter = 0;
+    private int pos = 0;
 
     public StringIterator(String string) {
         this.string = string;
@@ -13,17 +13,17 @@ public class StringIterator {
     }
 
     public boolean hasNext() {
-        return counter < length;
+        return pos < length;
     }
 
     public char next() {
         if (!this.hasNext()) {
             throw new NoSuchElementException();
         }
-        return string.charAt(counter++);
+        return string.charAt(pos++);
     }
 
     public void reset() {
-        counter = 0;
+        pos = 0;
     }
 }
