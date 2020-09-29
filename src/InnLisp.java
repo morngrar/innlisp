@@ -1,23 +1,12 @@
 import interpreter.Operand;
 import iterator.StringIterator;
 import parser.Parser;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
 
 public class InnLisp {
     public static void main(String[] args) throws IOException {
-        /*String code = "(+ \n\t(- 20 1 1 1 1 1 1 1 1 1 1) (* 5 3))";
-        //String code = "(/ 16 2 2)";
-
-        System.out.println("\nTesting interpreting:\n\n" + code + "\n");
-
-        Operand result = Parser.parse(code).interpret(null);
-
-        System.out.println("Result: " + result.getValue());*/
-
         repl();
     }
 
