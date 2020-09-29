@@ -1,6 +1,6 @@
 package interpreter;
 
-public class VarExpression extends InnLispExpression {  // TODO: barn/ikke barn -> variabel med verdi eller null
+public class VarExpression extends InnLispExpression {
 
     @Override
     public Operand interpret(Context ctx) {
